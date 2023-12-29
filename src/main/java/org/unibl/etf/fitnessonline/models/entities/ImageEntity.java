@@ -1,9 +1,11 @@
 package org.unibl.etf.fitnessonline.models.entities;
 
 import jakarta.persistence.*;
+import lombok.*;
 
 import java.util.Objects;
 
+@Data
 @Entity
 @Table(name = "image", schema = "fitnessonline", catalog = "")
 public class ImageEntity {
@@ -18,40 +20,4 @@ public class ImageEntity {
     @JoinColumn(name = "program_id", referencedColumnName = "id", nullable = false)
     private ProgramEntity program;
 
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getUrl() {
-        return url;
-    }
-
-    public void setUrl(String url) {
-        this.url = url;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        ImageEntity that = (ImageEntity) o;
-        return id == that.id && Objects.equals(url, that.url);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, url);
-    }
-
-    public ProgramEntity getProgram() {
-        return program;
-    }
-
-    public void setProgram(ProgramEntity program) {
-        this.program = program;
-    }
 }

@@ -1,10 +1,12 @@
 package org.unibl.etf.fitnessonline.models.entities;
 
 import jakarta.persistence.*;
+import lombok.*;
 
 import java.sql.Timestamp;
 import java.util.Objects;
 
+@Data
 @Entity
 @Table(name = "comment", schema = "fitnessonline", catalog = "")
 public class CommentEntity {
@@ -25,56 +27,4 @@ public class CommentEntity {
     @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false)
     private UserEntity user;
 
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getContent() {
-        return content;
-    }
-
-    public void setContent(String content) {
-        this.content = content;
-    }
-
-    public Timestamp getDatetime() {
-        return datetime;
-    }
-
-    public void setDatetime(Timestamp datetime) {
-        this.datetime = datetime;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        CommentEntity that = (CommentEntity) o;
-        return id == that.id && Objects.equals(content, that.content) && Objects.equals(datetime, that.datetime);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, content, datetime);
-    }
-
-    public ProgramEntity getProgram() {
-        return program;
-    }
-
-    public void setProgram(ProgramEntity program) {
-        this.program = program;
-    }
-
-    public UserEntity getUser() {
-        return user;
-    }
-
-    public void setUser(UserEntity user) {
-        this.user = user;
-    }
 }
