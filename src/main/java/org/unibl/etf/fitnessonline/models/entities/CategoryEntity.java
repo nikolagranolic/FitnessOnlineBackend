@@ -1,5 +1,6 @@
 package org.unibl.etf.fitnessonline.models.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -18,10 +19,13 @@ public class CategoryEntity {
     @Column(name = "name", nullable = false, length = 45)
     private String name;
     @OneToMany(mappedBy = "category")
+    @JsonIgnore
     private List<AttributeEntity> attributes;
     @OneToMany(mappedBy = "category")
+    @JsonIgnore
     private List<CategorySubscriptionEntity> subscriptions;
     @OneToMany(mappedBy = "category")
+    @JsonIgnore
     private List<ProgramEntity> programs;
 
 }
