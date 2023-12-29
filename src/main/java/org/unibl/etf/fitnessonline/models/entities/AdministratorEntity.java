@@ -7,7 +7,7 @@ import java.util.Objects;
 
 @Data
 @Entity
-@Table(name = "administrator", schema = "fitnessonline", catalog = "")
+@Table(name = "administrator")
 public class AdministratorEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id

@@ -7,7 +7,7 @@ import java.util.Objects;
 
 @Data
 @Entity
-@Table(name = "category_subscription", schema = "fitnessonline", catalog = "")
+@Table(name = "category_subscription")
 public class CategorySubscriptionEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
