@@ -1,6 +1,6 @@
 package org.unibl.etf.fitnessonline.controllers;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.unibl.etf.fitnessonline.models.entities.CategorySubscriptionEntity;
@@ -17,6 +17,7 @@ public class CategorySubscriptionController {
         this.repository = repository;
     }
 
+    @GetMapping
     List<CategorySubscriptionEntity> findAll() {
         return repository.findAll();
     }
