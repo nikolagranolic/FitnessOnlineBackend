@@ -17,10 +17,10 @@ public class MessageEntity {
     @Basic
     @Column(name = "read", nullable = false)
     private boolean read;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "sender_id", referencedColumnName = "id", nullable = false)
     private UserEntity sender;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "recipient_id", referencedColumnName = "id", nullable = false)
     private UserEntity recipient;
 

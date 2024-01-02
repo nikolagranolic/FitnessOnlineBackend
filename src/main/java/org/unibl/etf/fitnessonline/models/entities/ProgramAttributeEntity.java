@@ -14,10 +14,10 @@ public class ProgramAttributeEntity {
     @Basic
     @Column(name = "value", nullable = false, length = 45)
     private String value;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "program_id", referencedColumnName = "id", nullable = false)
     private ProgramEntity program;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "attribute_id", referencedColumnName = "id", nullable = false)
     private AttributeEntity attribute;
 

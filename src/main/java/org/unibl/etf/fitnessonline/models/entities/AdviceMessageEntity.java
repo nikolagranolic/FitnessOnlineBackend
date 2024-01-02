@@ -17,7 +17,7 @@ public class AdviceMessageEntity {
     @Basic
     @Column(name = "read", nullable = false)
     private boolean read;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false)
     private UserEntity sender;
 

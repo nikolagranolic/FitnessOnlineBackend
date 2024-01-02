@@ -28,7 +28,7 @@ public class ActivityEntity {
     @Basic
     @Column(name = "date", nullable = false)
     private Date date;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false)
     private UserEntity user;
 

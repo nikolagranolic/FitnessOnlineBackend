@@ -19,10 +19,10 @@ public class ProgramParticipationEntity {
     @Basic
     @Column(name = "payment_method", nullable = false, length = 45)
     private String paymentMethod;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false)
     private UserEntity user;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "program_id", referencedColumnName = "id", nullable = false)
     private ProgramEntity program;
 

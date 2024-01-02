@@ -17,7 +17,7 @@ public class AttributeEntity {
     @Basic
     @Column(name = "name", nullable = false, length = 45)
     private String name;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id", referencedColumnName = "id", nullable = false)
     private CategoryEntity category;
     @OneToMany(mappedBy = "attribute")

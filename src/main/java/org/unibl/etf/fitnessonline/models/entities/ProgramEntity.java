@@ -51,10 +51,10 @@ public class ProgramEntity {
     @OneToMany(mappedBy = "program")
     @JsonIgnore
     private List<ImageEntity> images;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id", referencedColumnName = "id", nullable = false)
     private CategoryEntity category;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false)
     private UserEntity creator;
     @OneToMany(mappedBy = "program")
