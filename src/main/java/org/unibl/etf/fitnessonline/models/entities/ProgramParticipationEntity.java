@@ -1,10 +1,9 @@
 package org.unibl.etf.fitnessonline.models.entities;
 
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.Data;
 
 import java.sql.Date;
-import java.util.Objects;
 
 @Data
 @Entity
@@ -21,10 +20,10 @@ public class ProgramParticipationEntity {
     @Column(name = "payment_method", nullable = false, length = 45)
     private String paymentMethod;
     @ManyToOne
-    @JoinColumn(name = "program_id", referencedColumnName = "id", nullable = false)
-    private ProgramEntity program;
-    @ManyToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false)
     private UserEntity user;
+    @ManyToOne
+    @JoinColumn(name = "program_id", referencedColumnName = "id", nullable = false)
+    private ProgramEntity program;
 
 }

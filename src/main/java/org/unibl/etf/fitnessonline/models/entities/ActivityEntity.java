@@ -1,10 +1,9 @@
 package org.unibl.etf.fitnessonline.models.entities;
 
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.Data;
 
 import java.sql.Date;
-import java.util.Objects;
 
 @Data
 @Entity

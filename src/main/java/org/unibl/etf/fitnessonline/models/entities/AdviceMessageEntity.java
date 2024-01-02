@@ -1,9 +1,7 @@
 package org.unibl.etf.fitnessonline.models.entities;
 
 import jakarta.persistence.*;
-import lombok.*;
-
-import java.util.Objects;
+import lombok.Data;
 
 @Data
 @Entity
@@ -18,9 +16,9 @@ public class AdviceMessageEntity {
     private String content;
     @Basic
     @Column(name = "read", nullable = false)
-    private boolean userId;
+    private boolean read;
     @ManyToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false)
-    private UserEntity user;
+    private UserEntity sender;
 
 }

@@ -2,11 +2,10 @@ package org.unibl.etf.fitnessonline.models.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.Data;
 
 import java.sql.Date;
 import java.util.List;
-import java.util.Objects;
 
 @Data
 @Entity
@@ -55,8 +54,14 @@ public class ProgramEntity {
     @ManyToOne
     @JoinColumn(name = "category_id", referencedColumnName = "id", nullable = false)
     private CategoryEntity category;
+    @ManyToOne
+    @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false)
+    private UserEntity creator;
     @OneToMany(mappedBy = "program")
     @JsonIgnore
-    private List<ProgramParticipationEntity> participations;
+    private List<ProgramAttributeEntity> programAttributes;
+    @OneToMany(mappedBy = "program")
+    @JsonIgnore
+    private List<ProgramParticipationEntity> programParticipations;
 
 }

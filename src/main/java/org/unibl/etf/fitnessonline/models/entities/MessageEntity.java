@@ -1,9 +1,7 @@
 package org.unibl.etf.fitnessonline.models.entities;
 
 import jakarta.persistence.*;
-import lombok.*;
-
-import java.util.Objects;
+import lombok.Data;
 
 @Data
 @Entity
@@ -20,10 +18,10 @@ public class MessageEntity {
     @Column(name = "read", nullable = false)
     private boolean read;
     @ManyToOne
-    @JoinColumn(name = "recipient_id", referencedColumnName = "id", nullable = false)
-    private UserEntity recipient;
-    @ManyToOne
     @JoinColumn(name = "sender_id", referencedColumnName = "id", nullable = false)
     private UserEntity sender;
+    @ManyToOne
+    @JoinColumn(name = "recipient_id", referencedColumnName = "id", nullable = false)
+    private UserEntity recipient;
 
 }

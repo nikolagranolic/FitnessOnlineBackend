@@ -1,9 +1,7 @@
 package org.unibl.etf.fitnessonline.models.entities;
 
 import jakarta.persistence.*;
-import lombok.*;
-
-import java.util.Objects;
+import lombok.Data;
 
 @Data
 @Entity
@@ -16,8 +14,5 @@ public class ImageEntity {
     @Basic
     @Column(name = "url", nullable = false, length = 100)
     private String url;
-    @ManyToOne
-    @JoinColumn(name = "program_id", referencedColumnName = "id", nullable = false)
-    private ProgramEntity program;
 
 }

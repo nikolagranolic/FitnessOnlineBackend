@@ -18,7 +18,7 @@ public class LogController {
     }
 
     @GetMapping
-    List<LogEntity> findall() {
+    List<LogEntity> findAll() {
         return repository.findAll();
     }
 }

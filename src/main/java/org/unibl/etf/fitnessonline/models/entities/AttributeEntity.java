@@ -1,9 +1,10 @@
 package org.unibl.etf.fitnessonline.models.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.Data;
 
-import java.util.Objects;
+import java.util.List;
 
 @Data
 @Entity
@@ -19,5 +20,8 @@ public class AttributeEntity {
     @ManyToOne
     @JoinColumn(name = "category_id", referencedColumnName = "id", nullable = false)
     private CategoryEntity category;
+    @OneToMany(mappedBy = "attribute")
+    @JsonIgnore
+    private List<ProgramAttributeEntity> programAttributes;
 
 }

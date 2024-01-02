@@ -2,10 +2,9 @@ package org.unibl.etf.fitnessonline.models.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.Data;
 
 import java.util.List;
-import java.util.Objects;
 
 @Data
 @Entity
@@ -42,23 +41,26 @@ public class UserEntity {
     @OneToMany(mappedBy = "user")
     @JsonIgnore
     private List<ActivityEntity> activities;
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "sender")
     @JsonIgnore
     private List<AdviceMessageEntity> adviceMessages;
     @OneToMany(mappedBy = "user")
     @JsonIgnore
-    private List<CategorySubscriptionEntity> subscriptions;
+    private List<CategorySubscriptionEntity> categorySubscriptions;
     @OneToMany(mappedBy = "user")
     @JsonIgnore
     private List<CommentEntity> comments;
-    @OneToMany(mappedBy = "recipient")
-    @JsonIgnore
-    private List<MessageEntity> receivedMessages;
-    @OneToMany(mappedBy = "user")
-    @JsonIgnore
-    private List<ProgramParticipationEntity> participations;
     @OneToMany(mappedBy = "sender")
     @JsonIgnore
     private List<MessageEntity> sentMessages;
+    @OneToMany(mappedBy = "recipient")
+    @JsonIgnore
+    private List<MessageEntity> receivedMessages;
+    @OneToMany(mappedBy = "creator")
+    @JsonIgnore
+    private List<ProgramEntity> programsCreated;
+    @OneToMany(mappedBy = "user")
+    @JsonIgnore
+    private List<ProgramParticipationEntity> programParticipated;
 
 }

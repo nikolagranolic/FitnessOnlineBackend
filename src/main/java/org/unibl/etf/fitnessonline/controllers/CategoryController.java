@@ -9,7 +9,7 @@ import org.unibl.etf.fitnessonline.repositories.CategoryEntityRepository;
 import java.util.List;
 
 @RestController
-@RequestMapping("categories")
+@RequestMapping("/categories")
 public class CategoryController {
     private final CategoryEntityRepository repository;
 
