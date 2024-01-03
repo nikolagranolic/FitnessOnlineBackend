@@ -1,6 +1,8 @@
 package org.unibl.etf.fitnessonline.services.impl;
 
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.unibl.etf.fitnessonline.exceptions.NotFoundException;
 import org.unibl.etf.fitnessonline.models.dtos.ProgramDTO;
@@ -25,7 +27,21 @@ public class ProgramServiceImpl implements ProgramService {
 
     @Override
     public List<ProgramSimpleDTO> findAll() {
-        return repository.findAll().stream().map(l->modelMapper.map(l, ProgramSimpleDTO.class)).collect(Collectors.toList());
+        return repository.findAll().stream().map(l -> modelMapper.map(l, ProgramSimpleDTO.class)).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<ProgramSimpleDTO> findAll(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return repository.findAll(pageable)
+                .stream()
+                .map(programEntity -> modelMapper.map(programEntity, ProgramSimpleDTO.class))
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public long countAll() {
+        return repository.count();
     }
 
     @Override
@@ -35,7 +51,7 @@ public class ProgramServiceImpl implements ProgramService {
 
     @Override
     public List<ProgramDTO> getAllProgramsByUserId(Integer id) {
-        return repository.getAllByUser_Id(id).stream().map(l->modelMapper.map(l, ProgramDTO.class)).collect(Collectors.toList());
+        return repository.getAllByUser_Id(id).stream().map(l -> modelMapper.map(l, ProgramDTO.class)).collect(Collectors.toList());
     }
 
     @Override

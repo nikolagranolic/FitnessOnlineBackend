@@ -18,10 +18,22 @@ public class ProgramController {
     public ProgramController(ProgramService service) {
         this.programService = service;
     }
+//
+//    @GetMapping
+//    List<ProgramSimpleDTO> findAll() {
+//        return programService.findAll();
+//    }
 
     @GetMapping
-    List<ProgramSimpleDTO> findAll() {
-        return programService.findAll();
+    public List<ProgramSimpleDTO> findAll(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
+        return programService.findAll(page, size);
+    }
+
+    @GetMapping("/count")
+    public long countAll() {
+        return programService.countAll();
     }
 
     @GetMapping("/{id}")

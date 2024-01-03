@@ -9,6 +9,8 @@ import java.util.List;
 
 public interface ProgramService {
     List<ProgramSimpleDTO> findAll();
+    List<ProgramSimpleDTO> findAll(int page, int size);
+    long countAll();
     ProgramDTO findById(Integer id) throws NotFoundException;
 
     List<ProgramDTO> getAllProgramsByUserId(Integer id);
