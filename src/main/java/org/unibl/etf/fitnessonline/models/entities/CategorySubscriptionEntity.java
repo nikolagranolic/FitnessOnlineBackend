@@ -10,8 +10,8 @@ public class CategorySubscriptionEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "id", nullable = false)
-    private int id;
-    @ManyToOne(fetch = FetchType.LAZY)
+    private Integer id;
+    @ManyToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false)
     private UserEntity user;
     @ManyToOne(fetch = FetchType.LAZY)

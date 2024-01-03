@@ -12,7 +12,7 @@ public class ProgramParticipationEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "id", nullable = false)
-    private int id;
+    private Integer id;
     @Basic
     @Column(name = "date", nullable = false)
     private Date date;

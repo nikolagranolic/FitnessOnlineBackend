@@ -12,19 +12,19 @@ public class ActivityEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "id", nullable = false)
-    private int id;
+    private Integer id;
     @Basic
     @Column(name = "exercise", nullable = false, length = 45)
     private String exercise;
     @Basic
     @Column(name = "duration", nullable = false)
-    private int duration;
+    private Integer duration;
     @Basic
     @Column(name = "intensity", nullable = false, length = 45)
     private String intensity;
     @Basic
     @Column(name = "result", nullable = false)
-    private int result;
+    private Integer result;
     @Basic
     @Column(name = "date", nullable = false)
     private Date date;

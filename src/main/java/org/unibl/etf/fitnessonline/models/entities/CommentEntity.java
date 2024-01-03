@@ -12,7 +12,7 @@ public class CommentEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "id", nullable = false)
-    private int id;
+    private Integer id;
     @Basic
     @Column(name = "content", nullable = false, length = -1)
     private String content;
@@ -21,9 +21,9 @@ public class CommentEntity {
     private Timestamp datetime;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false)
-    private UserEntity user;
+    private UserEntity userByUserId;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "program_id", referencedColumnName = "id", nullable = false)
-    private ProgramEntity program;
+    private ProgramEntity programByProgramId;
 
 }

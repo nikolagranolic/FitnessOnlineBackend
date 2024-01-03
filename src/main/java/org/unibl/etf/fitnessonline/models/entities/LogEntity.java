@@ -12,7 +12,7 @@ public class LogEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "id", nullable = false)
-    private int id;
+    private Integer id;
     @Basic
     @Column(name = "content", nullable = false, length = -1)
     private String content;

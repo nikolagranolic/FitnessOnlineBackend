@@ -2,7 +2,7 @@ package org.unibl.etf.fitnessonline.models.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.*;
 
 import java.util.List;
 
@@ -13,7 +13,7 @@ public class UserEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "id", nullable = false)
-    private int id;
+    private Integer id;
     @Basic
     @Column(name = "first_name", nullable = false, length = 45)
     private String firstName;
@@ -37,7 +37,7 @@ public class UserEntity {
     private String email;
     @Basic
     @Column(name = "activated", nullable = false)
-    private boolean activated;
+    private Boolean activated;
     @OneToMany(mappedBy = "user")
     @JsonIgnore
     private List<ActivityEntity> activities;
@@ -47,7 +47,7 @@ public class UserEntity {
     @OneToMany(mappedBy = "user")
     @JsonIgnore
     private List<CategorySubscriptionEntity> categorySubscriptions;
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "userByUserId")
     @JsonIgnore
     private List<CommentEntity> comments;
     @OneToMany(mappedBy = "sender")
@@ -56,11 +56,11 @@ public class UserEntity {
     @OneToMany(mappedBy = "recipient")
     @JsonIgnore
     private List<MessageEntity> receivedMessages;
-    @OneToMany(mappedBy = "creator")
-    @JsonIgnore
-    private List<ProgramEntity> programsCreated;
     @OneToMany(mappedBy = "user")
     @JsonIgnore
-    private List<ProgramParticipationEntity> programParticipated;
+    private List<ProgramEntity> programCreations;
+    @OneToMany(mappedBy = "user")
+    @JsonIgnore
+    private List<ProgramParticipationEntity> programParticipations;
 
 }

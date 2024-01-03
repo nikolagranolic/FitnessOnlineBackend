@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.math.BigDecimal;
 import java.sql.Date;
 import java.util.List;
 
@@ -14,7 +15,7 @@ public class ProgramEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "id", nullable = false)
-    private int id;
+    private Integer id;
     @Basic
     @Column(name = "name", nullable = false, length = 45)
     private String name;
@@ -40,15 +41,15 @@ public class ProgramEntity {
     @Column(name = "end_date", nullable = false)
     private Date endDate;
     @Basic
-    @Column(name = "price", nullable = false, precision = 0)
-    private int price;
+    @Column(name = "price", nullable = false, precision = 2)
+    private BigDecimal price;
     @Basic
     @Column(name = "difficulty", nullable = false, length = 45)
     private String difficulty;
-    @OneToMany(mappedBy = "program")
+    @OneToMany(mappedBy = "programByProgramId")
     @JsonIgnore
     private List<CommentEntity> comments;
-    @OneToMany(mappedBy = "program")
+    @OneToMany(mappedBy = "programByProgramId")
     @JsonIgnore
     private List<ImageEntity> images;
     @ManyToOne(fetch = FetchType.LAZY)
@@ -56,7 +57,7 @@ public class ProgramEntity {
     private CategoryEntity category;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false)
-    private UserEntity creator;
+    private UserEntity user;
     @OneToMany(mappedBy = "program")
     @JsonIgnore
     private List<ProgramAttributeEntity> programAttributes;

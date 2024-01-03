@@ -1,24 +1,25 @@
 package org.unibl.etf.fitnessonline.controllers;
 
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.unibl.etf.fitnessonline.models.entities.UserEntity;
-import org.unibl.etf.fitnessonline.repositories.UserEntityRepository;
+import org.unibl.etf.fitnessonline.models.dtos.ProgramDTO;
+import org.unibl.etf.fitnessonline.services.UserService;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/users")
+@RequestMapping("/api/users")
 public class UserController {
-    private final UserEntityRepository repository;
+    private final UserService userService;
 
-    public UserController(UserEntityRepository repository) {
-        this.repository = repository;
+    public UserController(UserService userService) {
+        this.userService = userService;
     }
 
-    @GetMapping
-    List<UserEntity> findAll() {
-        return repository.findAll();
+    @GetMapping("/{id}/programs")
+    public List<ProgramDTO> getAllProgramsByUserId(@PathVariable Integer id) {
+        return userService.getAllProgramsByUserId(id);
     }
 }
