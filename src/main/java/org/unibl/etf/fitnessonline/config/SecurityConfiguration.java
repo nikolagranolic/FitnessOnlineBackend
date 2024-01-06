@@ -3,6 +3,7 @@ package org.unibl.etf.fitnessonline.config;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
@@ -34,17 +35,19 @@ public class SecurityConfiguration {
 //                .csrf(csrf -> csrf.disable())
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests((authorize) -> authorize
-                        .requestMatchers("/**").permitAll()
-//                        .requestMatchers("/api/auth/**").permitAll()
-//                        .requestMatchers(HttpMethod.GET, "/api/programs").permitAll()
-//                        .requestMatchers(HttpMethod.GET, "/api/programs/**").permitAll()
-//                        .requestMatchers(HttpMethod.GET, "/api/rss").permitAll()
-//                        .anyRequest().authenticated()
+//                        .requestMatchers("/**").permitAll()
+                                .requestMatchers("/api/auth/**").permitAll()
+                                .requestMatchers(HttpMethod.GET, "/api/categories").permitAll()
+                                .requestMatchers(HttpMethod.POST, "/api/programs/filter").permitAll()
+                                .requestMatchers(HttpMethod.POST, "/api/programs/count").permitAll()
+                                .requestMatchers(HttpMethod.GET, "/api/programs/{id}").permitAll()
+                                .requestMatchers(HttpMethod.GET, "/api/rss").permitAll()
+                                .anyRequest().authenticated()
                 )
                 .sessionManagement(manager -> manager.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(daoAuthenticationProvider())
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
-    return http.build();
+        return http.build();
     }
 
     @Bean

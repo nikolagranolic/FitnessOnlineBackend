@@ -20,11 +20,8 @@ public class ProgramController {
     public ProgramController(ProgramService service) {
         this.programService = service;
     }
-//
-//    @GetMapping
-//    List<ProgramSimpleDTO> findAll() {
-//        return programService.findAll();
-//    }
+
+
 
     @GetMapping
     public List<ProgramSimpleDTO> findAll(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size) {
@@ -66,4 +63,6 @@ public class ProgramController {
     public ProgramDTO update(@PathVariable Integer id, @RequestBody ProgramRequest programRequest) {
         return programService.update(id, programRequest);
     }
+
+
 }

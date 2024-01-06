@@ -42,14 +42,9 @@ public class JwtService {
         JwtBuilder builder = Jwts.builder().setClaims(extraClaims);
         builder.setSubject(userDetails.getUsername());
         builder.setIssuedAt(new Date(System.currentTimeMillis()));
-        builder.setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 24));
+        builder.setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 24));
         builder.signWith(getSigningKey(), SignatureAlgorithm.HS256);
         return builder.compact();
-//        return Jwts.builder().setClaims(extraClaims)
-//                .setSubject(userDetails.getUsername())
-//                .setIssuedAt(new Date(System.currentTimeMillis()))
-//                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 24))
-//                .signWith(getSigningKey(), SignatureAlgorithm.HS256).compact();
     }
 
 
