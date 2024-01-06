@@ -13,7 +13,7 @@ public class ImageEntity {
     @Column(name = "id", nullable = false)
     private Integer id;
     @Basic
-    @Column(name = "url", nullable = false, length = 100)
+    @Column(name = "url", nullable = false, length = 300)
     private String url;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "program_id", referencedColumnName = "id", nullable = false)

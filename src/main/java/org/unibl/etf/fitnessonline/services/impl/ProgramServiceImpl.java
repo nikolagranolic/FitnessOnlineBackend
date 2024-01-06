@@ -3,12 +3,15 @@ package org.unibl.etf.fitnessonline.services.impl;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.unibl.etf.fitnessonline.exceptions.NotFoundException;
 import org.unibl.etf.fitnessonline.models.dtos.ProgramDTO;
 import org.unibl.etf.fitnessonline.models.dtos.ProgramSimpleDTO;
 import org.unibl.etf.fitnessonline.models.entities.ProgramEntity;
+import org.unibl.etf.fitnessonline.models.requests.FilterRequest;
 import org.unibl.etf.fitnessonline.models.requests.ProgramRequest;
+import org.unibl.etf.fitnessonline.models.specifications.ProgramSpecification;
 import org.unibl.etf.fitnessonline.repositories.ProgramEntityRepository;
 import org.unibl.etf.fitnessonline.services.ProgramService;
 
@@ -31,6 +34,16 @@ public class ProgramServiceImpl implements ProgramService {
     }
 
     @Override
+    public List<ProgramSimpleDTO> findAll(FilterRequest filterRequest, int page, int size) {
+        Specification<ProgramEntity> specification = ProgramSpecification.createSpecification(filterRequest);
+        Pageable pageable = PageRequest.of(page, size);
+        return repository.findAll(specification, pageable)
+                .stream()
+                .map(programEntity -> modelMapper.map(programEntity, ProgramSimpleDTO.class))
+                .collect(Collectors.toList());
+    }
+
+    @Override
     public List<ProgramSimpleDTO> findAll(int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
         return repository.findAll(pageable)
@@ -42,6 +55,12 @@ public class ProgramServiceImpl implements ProgramService {
     @Override
     public long countAll() {
         return repository.count();
+    }
+
+    @Override
+    public long countAll(FilterRequest filterRequest) {
+        Specification<ProgramEntity> specification = ProgramSpecification.createSpecification(filterRequest);
+        return repository.count(specification);
     }
 
     @Override

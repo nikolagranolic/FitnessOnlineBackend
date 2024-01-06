@@ -1,6 +1,7 @@
 package org.unibl.etf.fitnessonline.controllers;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -11,6 +12,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/rss")
+@CrossOrigin(origins = "*")
 public class RSSController {
     @Value("${rss.feed.url}")
     private String rssFeedUrl;

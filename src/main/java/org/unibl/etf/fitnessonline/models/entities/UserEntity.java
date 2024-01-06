@@ -3,13 +3,21 @@ package org.unibl.etf.fitnessonline.models.entities;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.unibl.etf.fitnessonline.models.roles.Role;
 
+import java.util.Collection;
 import java.util.List;
 
 @Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name = "user")
-public class UserEntity {
+public class UserEntity implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "id", nullable = false)
@@ -27,17 +35,23 @@ public class UserEntity {
     @Column(name = "username", nullable = false, length = 45)
     private String username;
     @Basic
-    @Column(name = "password", nullable = false, length = 45)
+    @Column(name = "password", nullable = false, length = 100)
     private String password;
     @Basic
-    @Column(name = "avatar", nullable = true, length = 45)
+    @Column(name = "avatar", nullable = true, length = -1)
     private String avatar;
     @Basic
     @Column(name = "email", nullable = false, length = 45)
     private String email;
     @Basic
+    @Column(name = "verification_token", nullable = true, length = 300)
+    private String verificationToken;
+    @Basic
     @Column(name = "activated", nullable = false)
     private Boolean activated;
+    @Basic
+    @Column(name = "verified", nullable = false)
+    private Boolean verified;
     @OneToMany(mappedBy = "user")
     @JsonIgnore
     private List<ActivityEntity> activities;
@@ -63,4 +77,28 @@ public class UserEntity {
     @JsonIgnore
     private List<ProgramParticipationEntity> programParticipations;
 
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return List.of(new SimpleGrantedAuthority(Role.ROLE_USER.name()));
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
 }

@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.*;
 import org.unibl.etf.fitnessonline.exceptions.NotFoundException;
 import org.unibl.etf.fitnessonline.models.dtos.ProgramDTO;
 import org.unibl.etf.fitnessonline.models.dtos.ProgramSimpleDTO;
+import org.unibl.etf.fitnessonline.models.requests.FilterRequest;
 import org.unibl.etf.fitnessonline.models.requests.ProgramRequest;
 import org.unibl.etf.fitnessonline.services.ProgramService;
 
@@ -12,6 +13,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/programs")
+@CrossOrigin(origins = "*")
 public class ProgramController {
     private final ProgramService programService;
 
@@ -25,15 +27,23 @@ public class ProgramController {
 //    }
 
     @GetMapping
-    public List<ProgramSimpleDTO> findAll(
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size) {
+    public List<ProgramSimpleDTO> findAll(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size) {
         return programService.findAll(page, size);
+    }
+
+    @PostMapping("/filter")
+    public List<ProgramSimpleDTO> findAll(@RequestBody(required = false) FilterRequest filterRequest, @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "2") int size) {
+        return programService.findAll(filterRequest, page, size);
     }
 
     @GetMapping("/count")
     public long countAll() {
         return programService.countAll();
+    }
+
+    @PostMapping("/count")
+    public long countAll(@RequestBody(required = false) FilterRequest filterRequest) {
+        return programService.countAll(filterRequest);
     }
 
     @GetMapping("/{id}")
