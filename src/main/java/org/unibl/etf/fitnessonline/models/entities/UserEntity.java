@@ -2,11 +2,13 @@ package org.unibl.etf.fitnessonline.models.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.unibl.etf.fitnessonline.models.roles.Role;
 
 import java.util.Collection;
 import java.util.List;
@@ -61,7 +63,7 @@ public class UserEntity implements UserDetails {
     @OneToMany(mappedBy = "user")
     @JsonIgnore
     private List<CategorySubscriptionEntity> categorySubscriptions;
-    @OneToMany(mappedBy = "userByUserId")
+    @OneToMany(mappedBy = "userId")
     @JsonIgnore
     private List<CommentEntity> comments;
     @OneToMany(mappedBy = "sender")
@@ -79,7 +81,7 @@ public class UserEntity implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority(Role.ROLE_USER.name()));
+        return List.of(new SimpleGrantedAuthority("USER"));
     }
 
     @Override

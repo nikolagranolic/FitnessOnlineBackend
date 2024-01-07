@@ -39,6 +39,7 @@ public class SecurityConfiguration {
                                 .requestMatchers("/api/auth/**").permitAll()
                                 .requestMatchers(HttpMethod.GET, "/api/categories").permitAll()
                                 .requestMatchers(HttpMethod.POST, "/api/programs/filter").permitAll()
+                                .requestMatchers(HttpMethod.POST, "/api/comments").authenticated()
                                 .requestMatchers(HttpMethod.POST, "/api/programs/count").permitAll()
                                 .requestMatchers(HttpMethod.GET, "/api/programs/{id}").permitAll()
                                 .requestMatchers(HttpMethod.GET, "/api/rss").permitAll()

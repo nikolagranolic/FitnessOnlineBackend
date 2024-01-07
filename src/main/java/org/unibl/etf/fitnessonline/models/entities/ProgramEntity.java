@@ -46,7 +46,7 @@ public class ProgramEntity {
     @Basic
     @Column(name = "difficulty", nullable = false, length = 45)
     private String difficulty;
-    @OneToMany(mappedBy = "programByProgramId")
+    @OneToMany(mappedBy = "programId")
     @JsonIgnore
     private List<CommentEntity> comments;
     @OneToMany(mappedBy = "programByProgramId")

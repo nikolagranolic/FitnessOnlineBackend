@@ -7,7 +7,9 @@ import org.springframework.stereotype.Service;
 import org.unibl.etf.fitnessonline.exceptions.ConflictException;
 import org.unibl.etf.fitnessonline.exceptions.NotFoundException;
 import org.unibl.etf.fitnessonline.models.dtos.ProgramDTO;
+import org.unibl.etf.fitnessonline.models.dtos.UserDTO;
 import org.unibl.etf.fitnessonline.models.entities.UserEntity;
+import org.unibl.etf.fitnessonline.models.requests.EditUserRequest;
 import org.unibl.etf.fitnessonline.models.requests.RegisterRequest;
 import org.unibl.etf.fitnessonline.repositories.UserEntityRepository;
 import org.unibl.etf.fitnessonline.services.MailService;
@@ -43,6 +45,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public UserDTO findById(Integer id) throws NotFoundException {
+        return modelMapper.map(repository.findById(id).orElseThrow(NotFoundException::new), UserDTO.class);
+    }
+
+    @Override
     public void insert(RegisterRequest request) {
         if (repository.findByEmail(request.getEmail()).isPresent() || repository.findByUsername(request.getUsername()).isPresent()) {
             throw new ConflictException();
@@ -57,6 +64,26 @@ public class UserServiceImpl implements UserService {
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
         userEntity.setPassword(encoder.encode(request.getPassword()));
         repository.saveAndFlush(userEntity);
+    }
+
+    @Override
+    public void update(Integer id, EditUserRequest request) {
+        Optional<UserEntity> user = repository.findById(id);
+        if (user.isPresent()) {
+            UserEntity userEntity = user.get();
+            userEntity.setFirstName(request.getFirstName());
+            userEntity.setLastName(request.getLastName());
+            userEntity.setCity(request.getCity());
+            userEntity.setEmail(request.getEmail());
+            if (request.getPassword() != null) {
+                BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+                userEntity.setPassword(encoder.encode(request.getPassword()));
+            }
+            if (request.getAvatar() != null) {
+                userEntity.setAvatar(request.getAvatar());
+            }
+            repository.saveAndFlush(userEntity);
+        }
     }
 
     public String verify(String email, String token) {

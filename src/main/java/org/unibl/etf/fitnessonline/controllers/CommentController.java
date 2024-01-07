@@ -7,8 +7,8 @@ import org.unibl.etf.fitnessonline.models.requests.CommentRequest;
 import org.unibl.etf.fitnessonline.services.ProgramService;
 
 @RestController
-@RequestMapping("/api/comments")
 @CrossOrigin(origins = "*")
+@RequestMapping("/api/comments")
 public class CommentController {
     private final ProgramService programService;
 
@@ -16,10 +16,10 @@ public class CommentController {
         this.programService = programService;
     }
 
-    @PostMapping()
+    @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public CommentDTO insert(@RequestBody CommentRequest commentRequest) {
-        System.out.println("Received comment request");
         return programService.insertComment(commentRequest);
     }
+
 }

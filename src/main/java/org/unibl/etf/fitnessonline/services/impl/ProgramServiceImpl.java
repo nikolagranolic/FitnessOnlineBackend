@@ -108,12 +108,11 @@ public class ProgramServiceImpl implements ProgramService {
 
     @Override
     public CommentDTO insertComment(CommentRequest commentRequest) {
-        commentRequest.setTimestamp(new Timestamp(System.currentTimeMillis()));
+        Timestamp temp = new Timestamp(System.currentTimeMillis());
         CommentEntity commentEntity = modelMapper.map(commentRequest, CommentEntity.class);
+        commentEntity.setDatetime(temp);
         commentEntity.setId(null);
         commentEntity = commentRepository.saveAndFlush(commentEntity);
-        return findCommentById(commentEntity.getId());
+        return modelMapper.map(commentRepository.findById(commentEntity.getId()), CommentDTO.class);
     }
-
-
 }

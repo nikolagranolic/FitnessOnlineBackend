@@ -39,6 +39,7 @@ public class JwtService {
     public String generateToken(Map<String, Object> extraClaims, UserDetails userDetails) {
         extraClaims.put("id", ((UserEntity)userDetails).getId());
         extraClaims.put("verified", ((UserEntity)userDetails).getVerified());
+        extraClaims.put("activated", ((UserEntity)userDetails).getActivated());
         JwtBuilder builder = Jwts.builder().setClaims(extraClaims);
         builder.setSubject(userDetails.getUsername());
         builder.setIssuedAt(new Date(System.currentTimeMillis()));

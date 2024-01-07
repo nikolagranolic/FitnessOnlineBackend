@@ -21,9 +21,9 @@ public class CommentEntity {
     private Timestamp datetime;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false)
-    private UserEntity userByUserId;
+    private UserEntity userId;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "program_id", referencedColumnName = "id", nullable = false)
-    private ProgramEntity programByProgramId;
+    private ProgramEntity programId;
 
 }

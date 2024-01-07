@@ -13,6 +13,7 @@ import java.util.List;
 @AllArgsConstructor
 public class ExercisesController {
     private final ExercisesService service;
+
     @GetMapping("/{muscle}")
     public List<ExerciseDTO> getExercisesByMuscle(@PathVariable String muscle) {
         return service.getExercisesByMuscle(muscle);
