@@ -49,7 +49,7 @@ public class ProgramEntity {
     @OneToMany(mappedBy = "programId")
     @JsonIgnore
     private List<CommentEntity> comments;
-    @OneToMany(mappedBy = "programByProgramId")
+    @OneToMany(mappedBy = "programId")
     @JsonIgnore
     private List<ImageEntity> images;
     @ManyToOne(fetch = FetchType.LAZY)

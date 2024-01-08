@@ -26,12 +26,12 @@ public class ProgramController {
 
 
     @GetMapping
-    public List<ProgramSimpleDTO> findAll(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size) {
+    public List<ProgramSimpleDTO> findAll(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "4") int size) {
         return programService.findAll(page, size);
     }
 
     @PostMapping("/filter")
-    public List<ProgramSimpleDTO> findAll(@RequestBody(required = false) FilterRequest filterRequest, @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "2") int size) {
+    public List<ProgramSimpleDTO> findAll(@RequestBody(required = false) FilterRequest filterRequest, @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "4") int size) {
         return programService.findAll(filterRequest, page, size);
     }
 
@@ -74,5 +74,10 @@ public class ProgramController {
     @PostMapping("/add-participation")
     public void addParticipation(@RequestBody ParticipationRequest request) {
         programService.insertParticipation(request);
+    }
+
+    @GetMapping("/owner/{programId}/{userId}")
+    public boolean checkIfOwner(@PathVariable Integer programId, @PathVariable Integer userId) {
+        return programService.checkIfOwner(userId, programId);
     }
 }

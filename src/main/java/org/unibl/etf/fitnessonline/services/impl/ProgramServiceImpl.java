@@ -5,6 +5,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+import org.unibl.etf.fitnessonline.exceptions.ConflictException;
 import org.unibl.etf.fitnessonline.exceptions.NotFoundException;
 import org.unibl.etf.fitnessonline.models.dtos.CommentDTO;
 import org.unibl.etf.fitnessonline.models.dtos.ProgramDTO;
@@ -130,11 +131,20 @@ public class ProgramServiceImpl implements ProgramService {
 
     @Override
     public void insertParticipation(ParticipationRequest participationRequest) {
-        java.util.Date currentDate = new java.util.Date();
-        Date sqlDate = new Date(currentDate.getTime());
-        ProgramParticipationEntity programParticipationEntity = modelMapper.map(participationRequest, ProgramParticipationEntity.class);
-        programParticipationEntity.setDate(sqlDate);
-        programParticipationEntity.setId(null);
-        programParticipationRepository.saveAndFlush(programParticipationEntity);
+        if (checkIfParticipant(participationRequest.getUserId(), participationRequest.getProgramId()) == null) {
+            java.util.Date currentDate = new java.util.Date();
+            Date sqlDate = new Date(currentDate.getTime());
+            ProgramParticipationEntity programParticipationEntity = modelMapper.map(participationRequest, ProgramParticipationEntity.class);
+            programParticipationEntity.setDate(sqlDate);
+            programParticipationEntity.setId(null);
+            programParticipationRepository.saveAndFlush(programParticipationEntity);
+        } else {
+            throw new ConflictException();
+        }
+    }
+
+    @Override
+    public boolean checkIfOwner(Integer userId, Integer programId) {
+        return repository.existsByUser_IdAndId(userId, programId);
     }
 }

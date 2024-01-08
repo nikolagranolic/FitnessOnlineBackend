@@ -35,4 +35,6 @@ public interface ProgramService {
     ProgramParticipationDTO checkIfParticipant(Integer userId, Integer programId);
 
     void insertParticipation(ParticipationRequest participationRequest);
+
+    boolean checkIfOwner(Integer userId, Integer programId);
 }

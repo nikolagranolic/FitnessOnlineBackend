@@ -8,4 +8,5 @@ import java.util.List;
 
 public interface ProgramEntityRepository extends JpaRepository<ProgramEntity, Integer>, JpaSpecificationExecutor<ProgramEntity> {
     List<ProgramEntity> getAllByUser_Id(Integer id);
+    boolean existsByUser_IdAndId(Integer userId, Integer programId);
 }

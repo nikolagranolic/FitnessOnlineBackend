@@ -13,11 +13,11 @@ public class ImageEntity {
     @Column(name = "id", nullable = false)
     private Integer id;
     @Basic
-    @Column(name = "url", nullable = false, length = 300)
+    @Column(name = "url", nullable = false, length = -1)
     private String url;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "program_id", referencedColumnName = "id", nullable = false)
     @JsonIgnore
-    private ProgramEntity programByProgramId;
+    private ProgramEntity programId;
 
 }
