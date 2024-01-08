@@ -17,6 +17,7 @@ public class ProgramDTO {
     private Date beginDate;
     private Date endDate;
     private BigDecimal price;
+    private String video;
     private String difficulty;
     private List<CommentDTO> comments;
     private List<ImageDTO> images;

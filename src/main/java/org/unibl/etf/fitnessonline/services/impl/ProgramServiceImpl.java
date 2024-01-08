@@ -8,17 +8,22 @@ import org.springframework.stereotype.Service;
 import org.unibl.etf.fitnessonline.exceptions.NotFoundException;
 import org.unibl.etf.fitnessonline.models.dtos.CommentDTO;
 import org.unibl.etf.fitnessonline.models.dtos.ProgramDTO;
+import org.unibl.etf.fitnessonline.models.dtos.ProgramParticipationDTO;
 import org.unibl.etf.fitnessonline.models.dtos.ProgramSimpleDTO;
 import org.unibl.etf.fitnessonline.models.entities.CommentEntity;
 import org.unibl.etf.fitnessonline.models.entities.ProgramEntity;
+import org.unibl.etf.fitnessonline.models.entities.ProgramParticipationEntity;
 import org.unibl.etf.fitnessonline.models.requests.CommentRequest;
 import org.unibl.etf.fitnessonline.models.requests.FilterRequest;
+import org.unibl.etf.fitnessonline.models.requests.ParticipationRequest;
 import org.unibl.etf.fitnessonline.models.requests.ProgramRequest;
 import org.unibl.etf.fitnessonline.models.specifications.ProgramSpecification;
 import org.unibl.etf.fitnessonline.repositories.CommentEntityRepository;
 import org.unibl.etf.fitnessonline.repositories.ProgramEntityRepository;
+import org.unibl.etf.fitnessonline.repositories.ProgramParticipationEntityRepository;
 import org.unibl.etf.fitnessonline.services.ProgramService;
 
+import java.sql.Date;
 import java.sql.Timestamp;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -28,11 +33,13 @@ public class ProgramServiceImpl implements ProgramService {
     private final ModelMapper modelMapper;
     private final ProgramEntityRepository repository;
     private final CommentEntityRepository commentRepository;
+    private final ProgramParticipationEntityRepository programParticipationRepository;
 
-    public ProgramServiceImpl(ProgramEntityRepository repository, ModelMapper modelMapper, CommentEntityRepository commentRepository) {
+    public ProgramServiceImpl(ProgramEntityRepository repository, ModelMapper modelMapper, CommentEntityRepository commentRepository, ProgramParticipationEntityRepository programParticipationRepository) {
         this.repository = repository;
         this.modelMapper = modelMapper;
         this.commentRepository = commentRepository;
+        this.programParticipationRepository = programParticipationRepository;
     }
 
     @Override
@@ -114,5 +121,20 @@ public class ProgramServiceImpl implements ProgramService {
         commentEntity.setId(null);
         commentEntity = commentRepository.saveAndFlush(commentEntity);
         return modelMapper.map(commentRepository.findById(commentEntity.getId()), CommentDTO.class);
+    }
+
+    @Override
+    public ProgramParticipationDTO checkIfParticipant(Integer userId, Integer programId) {
+        return modelMapper.map(programParticipationRepository.findByUser_IdAndProgram_Id(userId, programId), ProgramParticipationDTO.class);
+    }
+
+    @Override
+    public void insertParticipation(ParticipationRequest participationRequest) {
+        java.util.Date currentDate = new java.util.Date();
+        Date sqlDate = new Date(currentDate.getTime());
+        ProgramParticipationEntity programParticipationEntity = modelMapper.map(participationRequest, ProgramParticipationEntity.class);
+        programParticipationEntity.setDate(sqlDate);
+        programParticipationEntity.setId(null);
+        programParticipationRepository.saveAndFlush(programParticipationEntity);
     }
 }

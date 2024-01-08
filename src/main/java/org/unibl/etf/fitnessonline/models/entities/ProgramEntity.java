@@ -32,7 +32,7 @@ public class ProgramEntity {
     @Column(name = "contact", nullable = false, length = 45)
     private String contact;
     @Basic
-    @Column(name = "video", nullable = true, length = 200)
+    @Column(name = "video", nullable = true, length = -1)
     private String video;
     @Basic
     @Column(name = "begin_date", nullable = false)

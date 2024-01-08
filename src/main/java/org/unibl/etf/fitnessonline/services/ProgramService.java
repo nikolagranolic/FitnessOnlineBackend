@@ -3,9 +3,11 @@ package org.unibl.etf.fitnessonline.services;
 import org.unibl.etf.fitnessonline.exceptions.NotFoundException;
 import org.unibl.etf.fitnessonline.models.dtos.CommentDTO;
 import org.unibl.etf.fitnessonline.models.dtos.ProgramDTO;
+import org.unibl.etf.fitnessonline.models.dtos.ProgramParticipationDTO;
 import org.unibl.etf.fitnessonline.models.dtos.ProgramSimpleDTO;
 import org.unibl.etf.fitnessonline.models.requests.CommentRequest;
 import org.unibl.etf.fitnessonline.models.requests.FilterRequest;
+import org.unibl.etf.fitnessonline.models.requests.ParticipationRequest;
 import org.unibl.etf.fitnessonline.models.requests.ProgramRequest;
 
 import java.util.List;
@@ -29,4 +31,8 @@ public interface ProgramService {
     void delete(Integer id);
 
     CommentDTO insertComment(CommentRequest request);
+
+    ProgramParticipationDTO checkIfParticipant(Integer userId, Integer programId);
+
+    void insertParticipation(ParticipationRequest participationRequest);
 }

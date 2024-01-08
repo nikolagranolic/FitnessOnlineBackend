@@ -2,6 +2,7 @@ package org.unibl.etf.fitnessonline.controllers;
 
 import org.springframework.web.bind.annotation.*;
 import org.unibl.etf.fitnessonline.models.dtos.ProgramDTO;
+import org.unibl.etf.fitnessonline.models.dtos.ProgramSimpleDTO;
 import org.unibl.etf.fitnessonline.models.dtos.UserDTO;
 import org.unibl.etf.fitnessonline.models.requests.EditUserRequest;
 import org.unibl.etf.fitnessonline.services.UserService;
@@ -21,6 +22,11 @@ public class UserController {
     @GetMapping("/{id}/programs")
     public List<ProgramDTO> getAllProgramsByUserId(@PathVariable Integer id) {
         return userService.getAllProgramsByUserId(id);
+    }
+
+    @GetMapping("/{id}/participations")
+    public List<ProgramSimpleDTO> getAllParticipations(@PathVariable Integer id) {
+        return userService.getAllParticipations(id);
     }
 
     @GetMapping("/{id}")

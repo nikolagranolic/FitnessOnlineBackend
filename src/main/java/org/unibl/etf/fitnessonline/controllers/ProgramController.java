@@ -4,8 +4,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.unibl.etf.fitnessonline.exceptions.NotFoundException;
 import org.unibl.etf.fitnessonline.models.dtos.ProgramDTO;
+import org.unibl.etf.fitnessonline.models.dtos.ProgramParticipationDTO;
 import org.unibl.etf.fitnessonline.models.dtos.ProgramSimpleDTO;
 import org.unibl.etf.fitnessonline.models.requests.FilterRequest;
+import org.unibl.etf.fitnessonline.models.requests.ParticipationRequest;
 import org.unibl.etf.fitnessonline.models.requests.ProgramRequest;
 import org.unibl.etf.fitnessonline.services.ProgramService;
 
@@ -64,5 +66,13 @@ public class ProgramController {
         return programService.update(id, programRequest);
     }
 
+    @GetMapping("/{programId}/{userId}")
+    public ProgramParticipationDTO checkIfParticipant(@PathVariable Integer programId, @PathVariable Integer userId) {
+        return programService.checkIfParticipant(userId, programId);
+    }
 
+    @PostMapping("/add-participation")
+    public void addParticipation(@RequestBody ParticipationRequest request) {
+        programService.insertParticipation(request);
+    }
 }

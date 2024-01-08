@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.unibl.etf.fitnessonline.exceptions.ConflictException;
 import org.unibl.etf.fitnessonline.exceptions.NotFoundException;
 import org.unibl.etf.fitnessonline.models.dtos.ProgramDTO;
+import org.unibl.etf.fitnessonline.models.dtos.ProgramSimpleDTO;
 import org.unibl.etf.fitnessonline.models.dtos.UserDTO;
 import org.unibl.etf.fitnessonline.models.entities.UserEntity;
 import org.unibl.etf.fitnessonline.models.requests.EditUserRequest;
@@ -20,6 +21,7 @@ import java.math.BigInteger;
 import java.security.SecureRandom;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -37,6 +39,11 @@ public class UserServiceImpl implements UserService {
 
     public List<ProgramDTO> getAllProgramsByUserId(Integer id) {
         return programService.getAllProgramsByUserId(id);
+    }
+
+    @Override
+    public List<ProgramSimpleDTO> getAllParticipations(Integer id) {
+        return repository.findProgramsByUserId(id).stream().map(programEntity -> modelMapper.map(programEntity, ProgramSimpleDTO.class)).collect(Collectors.toList());
     }
 
     @Override
