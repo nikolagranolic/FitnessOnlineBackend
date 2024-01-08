@@ -80,4 +80,14 @@ public class ProgramController {
     public boolean checkIfOwner(@PathVariable Integer programId, @PathVariable Integer userId) {
         return programService.checkIfOwner(userId, programId);
     }
+
+    @GetMapping("/current-programs/{userId}")
+    public List<ProgramSimpleDTO> getCurrentProgramsByUserId(@PathVariable Integer userId) {
+        return programService.getCurrentProgramsByUserId(userId);
+    }
+
+    @GetMapping("/past-programs/{userId}")
+    public List<ProgramSimpleDTO> getPastProgramsByUserId(@PathVariable Integer userId) {
+        return programService.getPastProgramsByUserId(userId);
+    }
 }

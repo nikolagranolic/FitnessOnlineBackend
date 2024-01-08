@@ -26,6 +26,7 @@ import org.unibl.etf.fitnessonline.services.ProgramService;
 
 import java.sql.Date;
 import java.sql.Timestamp;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -52,19 +53,13 @@ public class ProgramServiceImpl implements ProgramService {
     public List<ProgramSimpleDTO> findAll(FilterRequest filterRequest, int page, int size) {
         Specification<ProgramEntity> specification = ProgramSpecification.createSpecification(filterRequest);
         Pageable pageable = PageRequest.of(page, size);
-        return repository.findAll(specification, pageable)
-                .stream()
-                .map(programEntity -> modelMapper.map(programEntity, ProgramSimpleDTO.class))
-                .collect(Collectors.toList());
+        return repository.findAll(specification, pageable).stream().map(programEntity -> modelMapper.map(programEntity, ProgramSimpleDTO.class)).collect(Collectors.toList());
     }
 
     @Override
     public List<ProgramSimpleDTO> findAll(int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
-        return repository.findAll(pageable)
-                .stream()
-                .map(programEntity -> modelMapper.map(programEntity, ProgramSimpleDTO.class))
-                .collect(Collectors.toList());
+        return repository.findAll(pageable).stream().map(programEntity -> modelMapper.map(programEntity, ProgramSimpleDTO.class)).collect(Collectors.toList());
     }
 
     @Override
@@ -146,5 +141,19 @@ public class ProgramServiceImpl implements ProgramService {
     @Override
     public boolean checkIfOwner(Integer userId, Integer programId) {
         return repository.existsByUser_IdAndId(userId, programId);
+    }
+
+    @Override
+    public List<ProgramSimpleDTO> getCurrentProgramsByUserId(Integer userId) {
+        LocalDate today = LocalDate.now();
+        Date sqlDate = java.sql.Date.valueOf(today);
+        return repository.getAllByUser_IdAndEndDateAfter(userId, sqlDate).stream().map(programEntity -> modelMapper.map(programEntity, ProgramSimpleDTO.class)).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<ProgramSimpleDTO> getPastProgramsByUserId(Integer userId) {
+        LocalDate today = LocalDate.now();
+        Date sqlDate = java.sql.Date.valueOf(today);
+        return repository.getAllByUser_IdAndEndDateBefore(userId, sqlDate).stream().map(programEntity -> modelMapper.map(programEntity, ProgramSimpleDTO.class)).collect(Collectors.toList());
     }
 }

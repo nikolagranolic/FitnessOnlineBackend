@@ -37,4 +37,7 @@ public interface ProgramService {
     void insertParticipation(ParticipationRequest participationRequest);
 
     boolean checkIfOwner(Integer userId, Integer programId);
+
+    List<ProgramSimpleDTO> getCurrentProgramsByUserId(Integer userId);
+    List<ProgramSimpleDTO> getPastProgramsByUserId(Integer userId);
 }
