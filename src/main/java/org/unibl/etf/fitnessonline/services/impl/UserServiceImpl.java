@@ -9,6 +9,7 @@ import org.unibl.etf.fitnessonline.exceptions.NotFoundException;
 import org.unibl.etf.fitnessonline.models.dtos.ProgramDTO;
 import org.unibl.etf.fitnessonline.models.dtos.ProgramSimpleDTO;
 import org.unibl.etf.fitnessonline.models.dtos.UserDTO;
+import org.unibl.etf.fitnessonline.models.dtos.UserSuperSimpleDTO;
 import org.unibl.etf.fitnessonline.models.entities.UserEntity;
 import org.unibl.etf.fitnessonline.models.requests.EditUserRequest;
 import org.unibl.etf.fitnessonline.models.requests.RegisterRequest;
@@ -118,6 +119,11 @@ public class UserServiceImpl implements UserService {
             mailService.sendVerificationEmail(userEntity.getEmail(), verificationToken);
             repository.saveAndFlush(userEntity);
         }
+    }
+
+    @Override
+    public List<UserSuperSimpleDTO> getAllPossibleRecipients(Integer id) {
+        return repository.findAllExceptUserId(id).stream().map(userEntity -> modelMapper.map(userEntity, UserSuperSimpleDTO.class)).collect(Collectors.toList());
     }
 
     private String generateVerificationToken() {

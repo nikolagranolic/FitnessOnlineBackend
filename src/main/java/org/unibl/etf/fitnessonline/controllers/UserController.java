@@ -4,6 +4,7 @@ import org.springframework.web.bind.annotation.*;
 import org.unibl.etf.fitnessonline.models.dtos.ProgramDTO;
 import org.unibl.etf.fitnessonline.models.dtos.ProgramSimpleDTO;
 import org.unibl.etf.fitnessonline.models.dtos.UserDTO;
+import org.unibl.etf.fitnessonline.models.dtos.UserSuperSimpleDTO;
 import org.unibl.etf.fitnessonline.models.requests.EditUserRequest;
 import org.unibl.etf.fitnessonline.services.UserService;
 
@@ -37,5 +38,10 @@ public class UserController {
     @PutMapping("/{id}")
     public void editUser(@PathVariable Integer id, @RequestBody EditUserRequest request) {
         userService.update(id, request);
+    }
+
+    @GetMapping("/{id}/all-possible-recipients")
+    public List<UserSuperSimpleDTO> getAllPossibleRecipients(@PathVariable Integer id) {
+        return userService.getAllPossibleRecipients(id);
     }
 }

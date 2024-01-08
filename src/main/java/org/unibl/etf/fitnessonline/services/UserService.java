@@ -6,6 +6,7 @@ import org.unibl.etf.fitnessonline.exceptions.NotFoundException;
 import org.unibl.etf.fitnessonline.models.dtos.ProgramDTO;
 import org.unibl.etf.fitnessonline.models.dtos.ProgramSimpleDTO;
 import org.unibl.etf.fitnessonline.models.dtos.UserDTO;
+import org.unibl.etf.fitnessonline.models.dtos.UserSuperSimpleDTO;
 import org.unibl.etf.fitnessonline.models.requests.EditUserRequest;
 import org.unibl.etf.fitnessonline.models.requests.RegisterRequest;
 
@@ -27,4 +28,6 @@ public interface UserService extends UserDetailsService {
     String verify(String userId, String token);
 
     void sendNewVerificationMail(String username);
+
+    List<UserSuperSimpleDTO> getAllPossibleRecipients(Integer id);
 }

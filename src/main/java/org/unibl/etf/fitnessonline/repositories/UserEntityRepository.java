@@ -17,4 +17,7 @@ public interface UserEntityRepository extends JpaRepository<UserEntity, Integer>
             "JOIN p.programParticipations pp " +
             "WHERE pp.user.id = :userId")
     List<ProgramEntity> findProgramsByUserId(@Param("userId") Integer userId);
+
+    @Query("SELECT u FROM UserEntity u WHERE u.id <> :userId")
+    List<UserEntity> findAllExceptUserId(@Param("userId") Integer userId);
 }
