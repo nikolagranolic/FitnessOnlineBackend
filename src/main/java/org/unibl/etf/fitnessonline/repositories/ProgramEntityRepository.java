@@ -11,7 +11,6 @@ public interface ProgramEntityRepository extends JpaRepository<ProgramEntity, In
     List<ProgramEntity> getAllByUser_Id(Integer id);
     boolean existsByUser_IdAndId(Integer userId, Integer programId);
     List<ProgramEntity> getAllByUser_IdAndEndDateAfter(Integer userId, Date currentDate);
-
     List<ProgramEntity> getAllByUser_IdAndEndDateBefore(Integer userId, Date currentDate);
-
+    List<ProgramEntity> getAllByCategory_IdAndCreatedAt(Integer categoryId, Date createdAt);
 }

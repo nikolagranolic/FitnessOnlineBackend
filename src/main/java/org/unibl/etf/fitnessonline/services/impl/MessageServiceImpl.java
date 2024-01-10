@@ -7,6 +7,7 @@ import org.unibl.etf.fitnessonline.models.entities.MessageEntity;
 import org.unibl.etf.fitnessonline.models.entities.UserEntity;
 import org.unibl.etf.fitnessonline.models.requests.MessageRequest;
 import org.unibl.etf.fitnessonline.repositories.MessageEntityRepository;
+import org.unibl.etf.fitnessonline.services.LogService;
 import org.unibl.etf.fitnessonline.services.MessageService;
 
 import java.util.List;
@@ -16,10 +17,12 @@ import java.util.stream.Collectors;
 public class MessageServiceImpl implements MessageService {
     private final MessageEntityRepository repository;
     private final ModelMapper modelMapper;
+    private final LogService logService;
 
-    public MessageServiceImpl(MessageEntityRepository repository, ModelMapper modelMapper) {
+    public MessageServiceImpl(MessageEntityRepository repository, ModelMapper modelMapper, LogService logService) {
         this.repository = repository;
         this.modelMapper = modelMapper;
+        this.logService = logService;
     }
 
     @Override
@@ -31,7 +34,8 @@ public class MessageServiceImpl implements MessageService {
         UserEntity r = new UserEntity();
         r.setId(request.getRecipientId());
         messageEntity.setRead(false);
-        repository.saveAndFlush(messageEntity);
+        messageEntity = repository.saveAndFlush(messageEntity);
+        logService.log("User with id " + request.getSenderId() + " sent a message with id " + messageEntity.getId() + " to a user with id " + request.getRecipientId());
     }
 
     @Override
@@ -40,6 +44,7 @@ public class MessageServiceImpl implements MessageService {
         if (!unreadMessages.isEmpty()) {
             repository.markMessagesAsRead(recipientId);
         }
+        logService.log("User with id " + recipientId + " read all of his/her unread messages");
         return unreadMessages;
     }
 }

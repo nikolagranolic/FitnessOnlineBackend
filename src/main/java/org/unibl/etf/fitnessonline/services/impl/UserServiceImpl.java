@@ -14,6 +14,7 @@ import org.unibl.etf.fitnessonline.models.entities.UserEntity;
 import org.unibl.etf.fitnessonline.models.requests.EditUserRequest;
 import org.unibl.etf.fitnessonline.models.requests.RegisterRequest;
 import org.unibl.etf.fitnessonline.repositories.UserEntityRepository;
+import org.unibl.etf.fitnessonline.services.LogService;
 import org.unibl.etf.fitnessonline.services.MailService;
 import org.unibl.etf.fitnessonline.services.ProgramService;
 import org.unibl.etf.fitnessonline.services.UserService;
@@ -30,12 +31,14 @@ public class UserServiceImpl implements UserService {
     private final MailService mailService;
     private final ProgramService programService;
     private final UserEntityRepository repository;
+    private final LogService logService;
 
-    public UserServiceImpl(ModelMapper modelMapper, MailService mailService, ProgramService programService, UserEntityRepository repository) {
+    public UserServiceImpl(ModelMapper modelMapper, MailService mailService, ProgramService programService, UserEntityRepository repository, LogService logService) {
         this.modelMapper = modelMapper;
         this.mailService = mailService;
         this.programService = programService;
         this.repository = repository;
+        this.logService = logService;
     }
 
     public List<ProgramDTO> getAllProgramsByUserId(Integer id) {
@@ -60,6 +63,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public void insert(RegisterRequest request) {
         if (repository.findByEmail(request.getEmail()).isPresent() || repository.findByUsername(request.getUsername()).isPresent()) {
+            logService.log("CONFLICT: new account cannot be created because username/email already exist");
             throw new ConflictException();
         }
         UserEntity userEntity = modelMapper.map(request, UserEntity.class);
@@ -71,6 +75,7 @@ public class UserServiceImpl implements UserService {
         mailService.sendVerificationEmail(userEntity.getEmail(), verificationToken);
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
         userEntity.setPassword(encoder.encode(request.getPassword()));
+        logService.log("User with id " + userEntity.getId() + " registered");
         repository.saveAndFlush(userEntity);
     }
 
@@ -90,6 +95,7 @@ public class UserServiceImpl implements UserService {
             if (request.getAvatar() != null) {
                 userEntity.setAvatar(request.getAvatar());
             }
+            logService.log("User with id " + userEntity.getId() + " updated his/her profile");
             repository.saveAndFlush(userEntity);
         }
     }
@@ -102,7 +108,8 @@ public class UserServiceImpl implements UserService {
             UserEntity userEntity = user.get();
             userEntity.setVerified(true);
             userEntity.setVerificationToken(null);
-            repository.saveAndFlush(userEntity);
+            userEntity = repository.saveAndFlush(userEntity);
+            logService.log("User with id " + userEntity.getId() + " has verified his/her email address");
             return "Account verified successfully!";
         }
     }
@@ -117,7 +124,8 @@ public class UserServiceImpl implements UserService {
             String verificationToken = generateVerificationToken();
             userEntity.setVerificationToken(verificationToken);
             mailService.sendVerificationEmail(userEntity.getEmail(), verificationToken);
-            repository.saveAndFlush(userEntity);
+            userEntity = repository.saveAndFlush(userEntity);
+            logService.log("User with id " + userEntity.getId() + " has asked for new verification email");
         }
     }
 

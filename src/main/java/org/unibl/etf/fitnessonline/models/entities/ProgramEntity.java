@@ -41,6 +41,9 @@ public class ProgramEntity {
     @Column(name = "end_date", nullable = false)
     private Date endDate;
     @Basic
+    @Column(name = "created_at", nullable = false)
+    private Date createdAt;
+    @Basic
     @Column(name = "price", nullable = false, precision = 2)
     private BigDecimal price;
     @Basic

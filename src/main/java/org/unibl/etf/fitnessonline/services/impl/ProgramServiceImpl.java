@@ -22,6 +22,7 @@ import org.unibl.etf.fitnessonline.models.specifications.ProgramSpecification;
 import org.unibl.etf.fitnessonline.repositories.CommentEntityRepository;
 import org.unibl.etf.fitnessonline.repositories.ProgramEntityRepository;
 import org.unibl.etf.fitnessonline.repositories.ProgramParticipationEntityRepository;
+import org.unibl.etf.fitnessonline.services.LogService;
 import org.unibl.etf.fitnessonline.services.ProgramService;
 
 import java.sql.Date;
@@ -36,12 +37,14 @@ public class ProgramServiceImpl implements ProgramService {
     private final ProgramEntityRepository repository;
     private final CommentEntityRepository commentRepository;
     private final ProgramParticipationEntityRepository programParticipationRepository;
+    private final LogService logService;
 
-    public ProgramServiceImpl(ProgramEntityRepository repository, ModelMapper modelMapper, CommentEntityRepository commentRepository, ProgramParticipationEntityRepository programParticipationRepository) {
+    public ProgramServiceImpl(ProgramEntityRepository repository, ModelMapper modelMapper, CommentEntityRepository commentRepository, ProgramParticipationEntityRepository programParticipationRepository, LogService logService) {
         this.repository = repository;
         this.modelMapper = modelMapper;
         this.commentRepository = commentRepository;
         this.programParticipationRepository = programParticipationRepository;
+        this.logService = logService;
     }
 
     @Override
@@ -92,7 +95,11 @@ public class ProgramServiceImpl implements ProgramService {
     public ProgramDTO insert(ProgramRequest programRequest) {
         ProgramEntity programEntity = modelMapper.map(programRequest, ProgramEntity.class);
         programEntity.setId(null);
+        java.util.Date currentDate = new java.util.Date();
+        Date sqlDate = new Date(currentDate.getTime());
+        programEntity.setCreatedAt(sqlDate);
         programEntity = repository.saveAndFlush(programEntity);
+        logService.log("User with id " + programRequest.getUserId() + " added a program with id " + programEntity.getId());
         return findById(programEntity.getId());
     }
 
@@ -101,11 +108,13 @@ public class ProgramServiceImpl implements ProgramService {
         ProgramEntity programEntity = modelMapper.map(programRequest, ProgramEntity.class);
         programEntity.setId(id);
         programEntity = repository.saveAndFlush(programEntity);
+        logService.log("User with id " + programRequest.getUserId() + " updated a program with id " + id);
         return findById(programEntity.getId());
     }
 
     @Override
     public void delete(Integer id) {
+        logService.log("Program with id " + id + " was deleted");
         repository.deleteById(id);
     }
 
@@ -116,6 +125,7 @@ public class ProgramServiceImpl implements ProgramService {
         commentEntity.setDatetime(temp);
         commentEntity.setId(null);
         commentEntity = commentRepository.saveAndFlush(commentEntity);
+        logService.log("User with id " + commentRequest.getUserId() + " added a comment to the program with id " + commentRequest.getProgramId());
         return modelMapper.map(commentRepository.findById(commentEntity.getId()), CommentDTO.class);
     }
 
@@ -132,6 +142,7 @@ public class ProgramServiceImpl implements ProgramService {
             ProgramParticipationEntity programParticipationEntity = modelMapper.map(participationRequest, ProgramParticipationEntity.class);
             programParticipationEntity.setDate(sqlDate);
             programParticipationEntity.setId(null);
+            logService.log("User with id " + participationRequest.getUserId() + " bought a program with id " + participationRequest.getProgramId());
             programParticipationRepository.saveAndFlush(programParticipationEntity);
         } else {
             throw new ConflictException();

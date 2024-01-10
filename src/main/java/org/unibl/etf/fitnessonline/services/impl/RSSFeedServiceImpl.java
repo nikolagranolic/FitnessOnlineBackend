@@ -6,6 +6,7 @@ import com.rometools.rome.io.SyndFeedInput;
 import com.rometools.rome.io.XmlReader;
 import org.springframework.stereotype.Service;
 import org.unibl.etf.fitnessonline.models.dtos.RSSFeedItemDTO;
+import org.unibl.etf.fitnessonline.services.LogService;
 import org.unibl.etf.fitnessonline.services.RSSFeedService;
 
 import java.net.URL;
@@ -14,6 +15,11 @@ import java.util.List;
 
 @Service
 public class RSSFeedServiceImpl implements RSSFeedService {
+    private final LogService logService;
+
+    public RSSFeedServiceImpl(LogService logService) {
+        this.logService = logService;
+    }
 
     @Override
     public List<RSSFeedItemDTO> getRssFeedItems(String rssFeedUrl) {
@@ -34,8 +40,7 @@ public class RSSFeedServiceImpl implements RSSFeedService {
                 rssFeedItems.add(dto);
             }
         } catch (Exception e) {
-            e.printStackTrace();
-            //TODO implement logging (after you have implemented controller and everything for LogEntity)
+            logService.log(e.getMessage());
         }
 
         return rssFeedItems;

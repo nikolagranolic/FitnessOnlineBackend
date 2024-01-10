@@ -8,6 +8,7 @@ import org.unibl.etf.fitnessonline.models.requests.ActivityRequest;
 import org.unibl.etf.fitnessonline.models.requests.ChartRequest;
 import org.unibl.etf.fitnessonline.repositories.ActivityEntityRepository;
 import org.unibl.etf.fitnessonline.services.ActivityService;
+import org.unibl.etf.fitnessonline.services.LogService;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -16,17 +17,20 @@ import java.util.stream.Collectors;
 public class ActivityServiceImpl implements ActivityService {
     private final ActivityEntityRepository repository;
     private final ModelMapper modelMapper;
+    private final LogService logService;
 
-    public ActivityServiceImpl(ActivityEntityRepository repository, ModelMapper modelMapper) {
+    public ActivityServiceImpl(ActivityEntityRepository repository, ModelMapper modelMapper, LogService logService) {
         this.repository = repository;
         this.modelMapper = modelMapper;
+        this.logService = logService;
     }
 
     @Override
     public void addActivity(ActivityRequest request) {
         ActivityEntity activityEntity = modelMapper.map(request, ActivityEntity.class);
         activityEntity.setId(null);
-        repository.saveAndFlush(activityEntity);
+        activityEntity = repository.saveAndFlush(activityEntity);
+        logService.log("User with id " + request.getUserId() + " added activity with id " + activityEntity.getId());
     }
 
     @Override
