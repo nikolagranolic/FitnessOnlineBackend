@@ -1,8 +1,11 @@
 package org.unibl.etf.fitnessonline.controllers;
 
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.unibl.etf.fitnessonline.exceptions.BadRequestException;
 import org.unibl.etf.fitnessonline.exceptions.NotFoundException;
 import org.unibl.etf.fitnessonline.models.dtos.ProgramDTO;
 import org.unibl.etf.fitnessonline.models.dtos.ProgramParticipationDTO;
@@ -33,7 +36,10 @@ public class ProgramController {
     }
 
     @PostMapping("/filter")
-    public List<ProgramSimpleDTO> findAll(@RequestBody(required = false) FilterRequest filterRequest, @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "4") int size) {
+    public List<ProgramSimpleDTO> findAll(@RequestBody(required = false) @Valid FilterRequest filterRequest, @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "4") int size, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            throw new BadRequestException();
+        }
         return programService.findAll(filterRequest, page, size);
     }
 
@@ -43,7 +49,10 @@ public class ProgramController {
     }
 
     @PostMapping("/count")
-    public long countAll(@RequestBody(required = false) FilterRequest filterRequest) {
+    public long countAll(@RequestBody(required = false) @Valid FilterRequest filterRequest, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            throw new BadRequestException();
+        }
         return programService.countAll(filterRequest);
     }
 
@@ -59,14 +68,20 @@ public class ProgramController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public ProgramDTO insert(Authentication authentication, @RequestBody ProgramRequest programRequest) {
+    public ProgramDTO insert(Authentication authentication, @RequestBody @Valid ProgramRequest programRequest, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            throw new BadRequestException();
+        }
         UserEntity user = (UserEntity) authentication.getPrincipal();
         programRequest.setUserId(user.getId());
         return programService.insert(programRequest);
     }
 
     @PutMapping("/{id}")
-    public ProgramDTO update(@PathVariable Integer id, @RequestBody ProgramRequest programRequest) {
+    public ProgramDTO update(@PathVariable Integer id, @RequestBody @Valid ProgramRequest programRequest, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            throw new BadRequestException();
+        }
         return programService.update(id, programRequest);
     }
 

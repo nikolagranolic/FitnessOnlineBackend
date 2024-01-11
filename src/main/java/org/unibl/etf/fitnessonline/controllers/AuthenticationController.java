@@ -1,7 +1,10 @@
 package org.unibl.etf.fitnessonline.controllers;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.unibl.etf.fitnessonline.exceptions.BadRequestException;
 import org.unibl.etf.fitnessonline.models.dtos.JwtAuthDTO;
 import org.unibl.etf.fitnessonline.models.requests.LoginRequest;
 import org.unibl.etf.fitnessonline.models.requests.RegisterRequest;
@@ -17,12 +20,18 @@ public class AuthenticationController {
     private final UserService userService;
 
     @PostMapping("/register")
-    public void register(@RequestBody RegisterRequest request) {
+    public void register(@RequestBody @Valid RegisterRequest request, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            throw new BadRequestException();
+        }
         userService.insert(request);
     }
 
     @PostMapping("/login")
-    public JwtAuthDTO register(@RequestBody LoginRequest request) {
+    public JwtAuthDTO register(@RequestBody @Valid LoginRequest request, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            throw new BadRequestException();
+        }
         return authenticationService.authenticate(request);
     }
 

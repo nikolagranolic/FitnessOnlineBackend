@@ -1,7 +1,10 @@
 package org.unibl.etf.fitnessonline.controllers;
 
+import jakarta.validation.Valid;
 import org.springframework.security.core.Authentication;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.unibl.etf.fitnessonline.exceptions.BadRequestException;
 import org.unibl.etf.fitnessonline.models.dtos.ProgramDTO;
 import org.unibl.etf.fitnessonline.models.dtos.ProgramSimpleDTO;
 import org.unibl.etf.fitnessonline.models.dtos.UserDTO;
@@ -42,7 +45,10 @@ public class UserController {
     }
 
     @PutMapping("/{id}")
-    public void editUser(Authentication authentication, @PathVariable Integer id, @RequestBody EditUserRequest request) {
+    public void editUser(Authentication authentication, @PathVariable Integer id, @RequestBody @Valid EditUserRequest request, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            throw new BadRequestException();
+        }
         UserEntity user = (UserEntity) authentication.getPrincipal();
         id = user.getId();
         userService.update(id, request);

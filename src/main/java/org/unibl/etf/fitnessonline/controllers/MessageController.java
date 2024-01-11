@@ -1,8 +1,11 @@
 package org.unibl.etf.fitnessonline.controllers;
 
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.unibl.etf.fitnessonline.exceptions.BadRequestException;
 import org.unibl.etf.fitnessonline.models.dtos.MessageDTO;
 import org.unibl.etf.fitnessonline.models.entities.UserEntity;
 import org.unibl.etf.fitnessonline.models.requests.MessageRequest;
@@ -18,7 +21,10 @@ public class MessageController {
     private MessageService service;
 
     @PostMapping
-    public void sendMessage(Authentication authentication, @RequestBody MessageRequest request) {
+    public void sendMessage(Authentication authentication, @RequestBody @Valid MessageRequest request, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            throw new BadRequestException();
+        }
         UserEntity user = (UserEntity) authentication.getPrincipal();
         request.setSenderId(user.getId());
         service.sendMessage(request);

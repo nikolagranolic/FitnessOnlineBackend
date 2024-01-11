@@ -1,8 +1,11 @@
 package org.unibl.etf.fitnessonline.controllers;
 
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.unibl.etf.fitnessonline.exceptions.BadRequestException;
 import org.unibl.etf.fitnessonline.models.entities.UserEntity;
 import org.unibl.etf.fitnessonline.models.requests.CategorySubscriptionRequest;
 import org.unibl.etf.fitnessonline.services.CategorySubscriptionService;
@@ -19,7 +22,10 @@ public class CategorySubscriptionController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public void addCategorySubscription(Authentication authentication, @RequestBody CategorySubscriptionRequest request) {
+    public void addCategorySubscription(Authentication authentication, @RequestBody @Valid CategorySubscriptionRequest request, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            throw new BadRequestException();
+        }
         UserEntity user = (UserEntity) authentication.getPrincipal();
         request.setUserId(user.getId());
         service.addCategorySubscription(request);
@@ -33,7 +39,10 @@ public class CategorySubscriptionController {
     }
 
     @PostMapping("/check-if-subscriber")
-    public boolean checkIfSubscriber(Authentication authentication, @RequestBody CategorySubscriptionRequest request) {
+    public boolean checkIfSubscriber(Authentication authentication, @RequestBody @Valid CategorySubscriptionRequest request, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            throw new BadRequestException();
+        }
         UserEntity user = (UserEntity) authentication.getPrincipal();
         request.setUserId(user.getId());
         return service.checkIfSubscribed(request);

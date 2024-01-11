@@ -1,9 +1,12 @@
 package org.unibl.etf.fitnessonline.controllers;
 
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.unibl.etf.fitnessonline.exceptions.BadRequestException;
 import org.unibl.etf.fitnessonline.models.dtos.ActivityDTO;
 import org.unibl.etf.fitnessonline.models.entities.UserEntity;
 import org.unibl.etf.fitnessonline.models.requests.ActivityRequest;
@@ -21,7 +24,10 @@ public class ActivityController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public void addActivity(Authentication authentication, @RequestBody ActivityRequest request) {
+    public void addActivity(Authentication authentication, @RequestBody @Valid ActivityRequest request, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            throw new BadRequestException();
+        }
         UserEntity user = (UserEntity) authentication.getPrincipal();
         request.setUserId(user.getId());
         service.addActivity(request);
