@@ -16,7 +16,6 @@ public class AuthenticationController {
     private final AuthenticationService authenticationService;
     private final UserService userService;
 
-    // TODO fix, popraviti, izbaciti, premjestiti, sta god, ima kod jutjubera kako se hesira passwird utd.
     @PostMapping("/register")
     public void register(@RequestBody RegisterRequest request) {
         userService.insert(request);

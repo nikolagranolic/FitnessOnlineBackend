@@ -1,6 +1,8 @@
 package org.unibl.etf.fitnessonline.controllers;
 
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
+import org.unibl.etf.fitnessonline.models.entities.UserEntity;
 import org.unibl.etf.fitnessonline.models.requests.AdviceMessageRequest;
 import org.unibl.etf.fitnessonline.services.AdviceMessageService;
 
@@ -15,7 +17,9 @@ public class AdviceMessageController {
     }
 
     @PostMapping
-    public void sendAdviceMessage(@RequestBody AdviceMessageRequest request) {
+    public void sendAdviceMessage(Authentication authentication, @RequestBody AdviceMessageRequest request) {
+        UserEntity user = (UserEntity) authentication.getPrincipal();
+        request.setSender(user.getId());
         service.sendAdviceMessage(request);
     }
 }

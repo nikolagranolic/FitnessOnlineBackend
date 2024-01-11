@@ -2,8 +2,10 @@ package org.unibl.etf.fitnessonline.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import org.unibl.etf.fitnessonline.models.dtos.ActivityDTO;
+import org.unibl.etf.fitnessonline.models.entities.UserEntity;
 import org.unibl.etf.fitnessonline.models.requests.ActivityRequest;
 import org.unibl.etf.fitnessonline.models.requests.ChartRequest;
 import org.unibl.etf.fitnessonline.services.ActivityService;
@@ -19,7 +21,9 @@ public class ActivityController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public void addActivity(@RequestBody ActivityRequest request) {
+    public void addActivity(Authentication authentication, @RequestBody ActivityRequest request) {
+        UserEntity user = (UserEntity) authentication.getPrincipal();
+        request.setUserId(user.getId());
         service.addActivity(request);
     }
 

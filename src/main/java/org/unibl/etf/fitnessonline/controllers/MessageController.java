@@ -1,8 +1,10 @@
 package org.unibl.etf.fitnessonline.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import org.unibl.etf.fitnessonline.models.dtos.MessageDTO;
+import org.unibl.etf.fitnessonline.models.entities.UserEntity;
 import org.unibl.etf.fitnessonline.models.requests.MessageRequest;
 import org.unibl.etf.fitnessonline.services.MessageService;
 
@@ -16,12 +18,16 @@ public class MessageController {
     private MessageService service;
 
     @PostMapping
-    public void sendMessage(@RequestBody MessageRequest request) {
+    public void sendMessage(Authentication authentication, @RequestBody MessageRequest request) {
+        UserEntity user = (UserEntity) authentication.getPrincipal();
+        request.setSenderId(user.getId());
         service.sendMessage(request);
     }
 
     @GetMapping("/{id}")
-    public List<MessageDTO> getUnreadMessagesAndMarkAsRead(@PathVariable Integer id) {
+    public List<MessageDTO> getUnreadMessagesAndMarkAsRead(Authentication authentication, @PathVariable Integer id) {
+        UserEntity user = (UserEntity) authentication.getPrincipal();
+        id = user.getId();
         return service.getUnreadMessagesAndMarkAsRead(id);
     }
 }

@@ -1,10 +1,12 @@
 package org.unibl.etf.fitnessonline.controllers;
 
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import org.unibl.etf.fitnessonline.models.dtos.ProgramDTO;
 import org.unibl.etf.fitnessonline.models.dtos.ProgramSimpleDTO;
 import org.unibl.etf.fitnessonline.models.dtos.UserDTO;
 import org.unibl.etf.fitnessonline.models.dtos.UserSuperSimpleDTO;
+import org.unibl.etf.fitnessonline.models.entities.UserEntity;
 import org.unibl.etf.fitnessonline.models.requests.EditUserRequest;
 import org.unibl.etf.fitnessonline.services.UserService;
 
@@ -21,12 +23,16 @@ public class UserController {
     }
 
     @GetMapping("/{id}/programs")
-    public List<ProgramDTO> getAllProgramsByUserId(@PathVariable Integer id) {
+    public List<ProgramDTO> getAllProgramsByUserId(Authentication authentication, @PathVariable Integer id) {
+        UserEntity user = (UserEntity) authentication.getPrincipal();
+        id = user.getId();
         return userService.getAllProgramsByUserId(id);
     }
 
     @GetMapping("/{id}/participations")
-    public List<ProgramSimpleDTO> getAllParticipations(@PathVariable Integer id) {
+    public List<ProgramSimpleDTO> getAllParticipations(Authentication authentication, @PathVariable Integer id) {
+        UserEntity user = (UserEntity) authentication.getPrincipal();
+        id = user.getId();
         return userService.getAllParticipations(id);
     }
 
@@ -36,12 +42,16 @@ public class UserController {
     }
 
     @PutMapping("/{id}")
-    public void editUser(@PathVariable Integer id, @RequestBody EditUserRequest request) {
+    public void editUser(Authentication authentication, @PathVariable Integer id, @RequestBody EditUserRequest request) {
+        UserEntity user = (UserEntity) authentication.getPrincipal();
+        id = user.getId();
         userService.update(id, request);
     }
 
     @GetMapping("/{id}/all-possible-recipients")
-    public List<UserSuperSimpleDTO> getAllPossibleRecipients(@PathVariable Integer id) {
+    public List<UserSuperSimpleDTO> getAllPossibleRecipients(Authentication authentication, @PathVariable Integer id) {
+        UserEntity user = (UserEntity) authentication.getPrincipal();
+        id = user.getId();
         return userService.getAllPossibleRecipients(id);
     }
 }
